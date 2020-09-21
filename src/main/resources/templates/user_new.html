@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="_template :: head"></head>
+
+<body>
+
+	<div class="content">
+		<h1>Novo usuário</h1>
+		
+		<form action="/user" method="POST" th:object="${user}">
+
+			<input type="text" name="name" value="Joao Carlos Lima" placeholder="Nome completo" th:classappend="${#fields.hasErrors('name')} ? invalid" /> 
+			<span th:errors="*{name}"></span> 
+			
+			<input type="text" name="email" value="joaocarlos@fiap.com.br" placeholder="Email" />
+			<span th:errors="*{email}"></span> 
+
+			<input name="pass" type="password" value="123456" placeholder="Senha" />
+			<span th:errors="*{pass}"></span> 
+			
+			<div class="actions">
+				<a class="btn" href="/user">Cancelar</a>
+				<button class="btn blue">Salvar</button>
+			</div>
+			
+		</form>
+	</div>
+	
+</body>
+</html>
