@@ -1,10 +1,13 @@
 package br.com.fiap.EpicTask.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	@GetMapping()
 	public ModelAndView users() {
@@ -37,8 +43,8 @@ public class UserController {
 		if (result.hasErrors())
 			return "user_new";
 		repository.save(user);
-		attributes.addFlashAttribute("message", "Usuário cadastrado com sucesso");
-		return "redirect:user";
+		attributes.addFlashAttribute("message", getMessage("message.newuser.success"));
+		return "redirect:/user";
 	}
 
 	@RequestMapping("new")
@@ -51,5 +57,24 @@ public class UserController {
 		repository.deleteById(id);
 		return "redirect:/user";
 	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView editUserForm(@PathVariable Long id) {
+		Optional<User> user = repository.findById(id);
+		ModelAndView modelAndView = new ModelAndView("user_edit");
+		modelAndView.addObject("user", user);
+		return modelAndView;		
+	}
 
+	@PostMapping("/update")
+	public String updateUser(@Valid User user, BindingResult result, RedirectAttributes redirect) {
+		if (result.hasErrors()) return "user_edit";
+		repository.save(user);
+		redirect.addFlashAttribute("message", getMessage("message.edituser.success"));
+		return "redirect:/user"; 
+	}
+	
+	private String getMessage(String code) {
+		return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+	}
 }

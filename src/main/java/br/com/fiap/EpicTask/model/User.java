@@ -26,6 +26,21 @@ public class User {
 	@Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres!")
 	private String pass;
 
+	@NotBlank(message = "{user.github.blank}")
+	private String gitHubUser;
+
+	public String getAvatar() {
+		return "https://avatars.githubusercontent.com/" + gitHubUser;
+	}
+
+	public String getGitHubUser() {
+		return gitHubUser;
+	}
+
+	public void setGitHubUser(String gitHubUser) {
+		this.gitHubUser = gitHubUser;
+	}
+
 	public Long getId() {
 		return id;
 	}
