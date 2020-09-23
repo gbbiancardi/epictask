@@ -17,7 +17,7 @@
 	<span class="alert" th:if="${message != null}" th:text="${message}"></span>
 
 	<div class="user" th:each="user : ${users}">
-		<img class="avatar" alt="" src="https://avatars.githubusercontent.com/gbbiancardi">
+		<img class="avatar" alt="" th:src="${'https://avatars.githubusercontent.com/' + user.gitHubUser}">
 		
 		<div class="user-info">
 			<h4 th:text="${user.name}"></h4>
